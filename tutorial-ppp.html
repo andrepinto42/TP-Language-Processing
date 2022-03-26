@@ -1,0 +1,667 @@
+<!DOCTYPE html SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>PPP - Ptext PreProcessor</title>
+        <link href="../bootstrap/css/bootstrap.css" rel="stylesheet" />
+        <link href="../bootstrap/css/bootstrap-responsive.css" rel="stylesheet" />
+        <link href="../bootstrap/css/docs.css" rel="stylesheet" />
+        <link href="../bootstrap/css/prettify.css" rel="stylesheet" />
+        <script src="../bootstrap/js/ga.js" async="" type="text/javascript"></script>
+        <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-146052-10']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    </head>
+    <body data-twttr-rendered="true" data-spy="scroll" data-target=".bs-docs-sidebar">
+        <header class="jumbotron subhead" id="overview">
+            <div class="container">
+                <h1>PPP V2.0 (preprocessador para LaTeX e/ou HTML)</h1>
+                <p class="lead">Ptext PreProcessor</p>
+                <p>Manual descritivo da linguagem PPP e ferramentas associadas</p>
+                <hr />
+                <address>@Copyright José Carlos Ramalho - DI/UM - Mar. 2013</address>
+            </div>
+        </header>
+        <div class="container">
+            <section id="ind2">
+                <div class="page-header">
+                    <h1>Introdução</h1>
+                </div>
+                <p>Como &eacute; sabido por quem tenha j&aacute; praticado a escrita de textos em latex e html,
+                    n&atilde;o &eacute; f&aacute;cil, por exemplo, a acentua&ccedil;&atilde;o e a
+                    cedilha&ccedil;&atilde;o.</p>
+                <p> Apesar dos muitos conversores existentes no mercado, a convers&atilde;o de textos latex para html e
+                    vice-versa n&atilde;o &eacute; t&atilde;o f&aacute;cil como &agrave;s vezes seria de desejar. </p>
+                <p> Actualmente muitos utilizadores latex tentam disponibilizar na Internet atrav&eacute;s do
+                    servi&ccedil;o WWW os seus documentos e lutam com o processo de convers&atilde;o de modo a tornar a
+                    vers&atilde;o final html o mais pr&oacute;xima poss&iacute;vel da vers&atilde;o latex e, n&atilde;o
+                    menos importante, o mais eficiente poss&iacute;vel para o utilizador final (a efici&ecirc;ncia
+                    traduz-se em tempos de espera de carregamento de p&aacute;ginas o que est&aacute; relacionado com a
+                    sua organiza&ccedil;&atilde;o e natureza).</p>
+                <p> Neste contexto surgiu a ideia de criar uma linguagem um pouco mais abstracta que o latex ou o html,
+                    que n&atilde;o &eacute; nem pretende ser um substituto de nenhum dos dois mas sim uma plataforma
+                    interm&eacute;dia entre os dois a partir da qual seja f&aacute;cil e trivial converter em latex ou
+                    html.</p>
+                <p> A linguagem proposta neste documento n&atilde;o cobre nem de perto as facilidades e potencialidades
+                    quer do latex quer do html, cobre apenas um subconjunto que se pensou ser o utilizado em cerca de
+                    75% dos documentos (foi criado um mecanismo que permite a introdu&ccedil;&atilde;o de texto na
+                    linguagem destino: latex ou html).</p>
+                <p> Em resumo os objectivos deste preprocessador s&atilde;o facilitar:</p>
+                <ul>
+                    <li> a convers&atilde;o entre latex e html</li>
+                    <li> a introdu&ccedil;&atilde;o de acentos e cedilhas </li>
+                    <li> a introdu&ccedil;&atilde;o de cap&iacute;tulos, sec&ccedil;&otilde;es, etc. </li>
+                    <li> o mecanismo de descri&ccedil;&atilde;o por listas de items </li>
+                    <li> o mecanismo de descri&ccedil;&atilde;o por listas enumeradas </li>
+                    <li> o mecanismo de descri&ccedil;&atilde;o por listas descritivas </li>
+                    <li> a introdu&ccedil;&atilde;o de coment&aacute;rios no texto </li>
+                    <li> grafismos (s&oacute; em HTML) </li>
+                    <li> links (s&oacute; em HTML) </li>
+                    <li> Tabelas </li>
+                    <li> formata&ccedil;&atilde;o de caracteres </li>
+                    <li> gera&ccedil;&atilde;o de &iacute;ndices </li>
+                    <li> modos protegidos </li>
+                    <li> e outras coisas que v&atilde;o surgindo no dia-a-dia... </li>
+                </ul>
+            </section>
+            <hr width="80%" align="center" />
+            <section id="ind3">
+                <div class="page-header">
+                    <h1>PPP - Composi&ccedil;&atilde;o e Instala&ccedil;&atilde;o</h1>
+                </div>
+                <p>A vers&atilde;o actual do PPP est&aacute; desenvolvida em <em>flex</em>.</p><p>A ferramenta &eacute;
+                    assim constitu&iacute;da pelos ficheiros:</p>
+                <dl>
+                    <dt> ppp.fl</dt>
+                    <dd> c&oacute;digo fonte da ferramenta.</dd>
+                    <dt> makefile</dt>
+                    <dd> a makefile que cria o execut&aacute;vel na plataforma corrente (tem que ter o flex
+                        instalado).</dd>
+                </dl>
+                <p> Para instalar a ferramenta basta copiar os 2 ficheiros para a directoria apropriada e mandar
+                    executar a makefile. Isso far&aacute; com que um execut&aacute;vel de nome <em>ppp</em> seja criado
+                    nessa directoria.</p>
+            </section>
+            <hr />
+            <section id="ind4">
+                <div class="page-header">
+                    <h1>PPP - Invoca&ccedil;&atilde;o</h1>
+                </div>
+                <p>Inicialmente o PPP permitia v&aacute;rias op&ccedil;&otilde;es de invoca&ccedil;&atilde;o, mas
+                    &agrave; medida que foi evoluindo, algumas dessas op&ccedil;&otilde;es incompatibilizaram-se com
+                    alguns dos procedimentos da ferramenta, de modo que a invoca&ccedil;&atilde;o aconselhada
+                    ser&aacute;:</p>
+                <dl>
+                    <dt> para gerar LaTeX</dt>
+                    <dd>
+                        <pre class="prettyprint">ppp -l fich.pre fich.tex</pre></dd>
+                    <dt> para gerar HTML</dt>
+                    <dd>
+                        <pre class="prettyprint">ppp -h fich.pre fich.html</pre></dd>
+                </dl>
+            </section>
+            <hr />
+            <section id="ind5">
+                <div class="page-header">
+                    <h1>PPP - Ptext PreProcessor</h1>
+                </div>
+                <p>Nas sec&ccedil;&otilde;es seguintes descreve-se de maneira sucinta o funcionamento e as facilidades
+                    inseridas na ferramenta criada.</p>
+                <section id="ind6">
+                    <div class="page-header">
+                        <h2>Comandos latex/html</h2>
+                    </div>
+                    <p>Como j&aacute; foi referido o utilizador pode em qualquer altura introduzir comandos nativos em
+                        latex/html (ao faz&ecirc;-lo n&atilde;o est&aacute; a tirar partido da ferramenta, mas para as
+                        facilidades n&atilde;o cobertas pelo PPP &eacute; a &uacute;nica solu&ccedil;&atilde;o).</p>
+                    <p>Devido &agrave; caracter&iacute;stica multi-l&iacute;ngua da ferramenta os comandos escritos numa
+                        das linguagens nativas t&ecirc;m que ser protegidos, e s&oacute; aparecer&atilde;o no documento
+                        da linguagem a que pertencem. Por exemplo, se num documento quisermos introduzir texto latex
+                        puro, podemos faz&ecirc;-lo em modo protegido latex mas, esse texto s&oacute; aparecer&aacute;
+                        na convers&atilde;o do texto para latex.</p>
+                    <p>Como temos duas linguagens alvo poss&iacute;veis temos dois modos protegidos:</p>
+                    <dl>
+                        <dt> latex</dt>
+                        <dd>
+                            <pre class="prettyprint">\latex ... texto latex ... \endlatex</pre></dd>
+                        <dt> html</dt>
+                        <dd>
+                            <pre class="prettyprint">\html ... texto html ... \endhtml</pre>
+                        </dd>
+                    </dl>
+                    <h3>Exemplos</h3>
+                    <dl>
+                        <dt> latex</dt>
+                        <dd>
+                            <pre class="prettyprint">\latex
+\maketitle
+\endlatex</pre></dd>
+
+
+                        <dt> html</dt>
+                        <dd>
+                            <pre class="prettyprint">\html
+&lt;IMG ALIGN=TOP SRC="exemplo.gif"&gt;
+\endhtml</pre></dd>
+
+
+                    </dl>
+                </section>
+                <section id="ind8">
+                    <div class="page-header">
+                        <h2>Acentos e Cedilhas</h2>
+                    </div>
+                    <p>Este foi um dos aspectos que mais motivou no passado o desenvolvimento da presente ferramenta. A
+                        sintaxe definida &eacute; a seguinte:</p>
+                    <ul>
+                        <li> &#39;&#97; = &aacute;</li>
+                        <li> &#96;&#97; = &agrave;</li>
+                        <li> &#94;&#101; = &ecirc;</li>
+                        <li> &#126;&#79; = &Otilde;</li>
+                        <li> &#44;&#99; = &ccedil;</li>
+                    </ul>
+                </section>
+                <section id="ind8">
+                    <div class="page-header">
+                        <h2>Cabe&ccedil;alhos e Pre&acirc;mbulos de um Documento</h2>
+                    </div>
+                    <p>T&iacute;tulo e Autor do Documento:</p>
+                    <ul>
+                        <li><pre class="prettyprint">=titulo=[texto]</pre></li>
+                        <li><pre class="prettyprint">=autor=[texto]</pre></li>
+                    </ul>
+                    <p>Pano de Fundo (s&oacute; em HTML):</p>
+                    <ul>
+                        <li><pre class="prettyprint">=body=[imagem]</pre></li>
+                    </ul>
+                    <p>Aqui o &#91;&#105;&#109;&#97;&#103;&#101;&#109;&#93; refere o "pathname" da imagem fundo
+                        (normalmente um GIF pequeno), que ir&aacute; ser colocada como "BACKGROUND" da p&aacute;gina
+                        HTML gerada.</p>
+                    <p>&Iacute;ndices:</p>
+                    <ul>
+                        <li><pre class="prettyprint">=indice=</pre></li>
+                    </ul>
+                    <p>Os &iacute;ndices s&atilde;o gerados no ponto do documento onde este comando aparece e contendo
+                        informa&ccedil;&atilde;o desse ponto em diante. &Eacute; assim possivel, ter indices que
+                        abrangem apenas parte do documento. Neste momento, s&oacute; &eacute; possivel criar um
+                        &iacute;ndice por documento.</p> </section>
+                <section id="">
+                    <div class="page-header">
+                        <h2>Sec&ccedil;&otilde;es e Subsec&ccedil;&otilde;es</h2>
+                    </div>
+                    <ul>
+                        <li><pre class="prettyprint">=título de secção</pre>
+                        </li>
+                        <li><pre class="prettyprint">==título de subsecção</pre>
+                        </li>
+                        <li><pre class="prettyprint">===título de subsubsecção</pre>
+                        </li>
+                        <li><pre class="prettyprint">====título de subsecçãoo de nível 4</pre>
+                        </li>
+                        <li><pre class="prettyprint">=====título de subsecção de nível 5</pre>
+                        </li>
+                    </ul> <p>Os "=" devem aparecer no in&iacute;cio das linhas respectivas dando origem
+                        autom&aacute;ticamente &agrave; numera&ccedil;&atilde;o. Deste modo, os t&iacute;tulos
+                        n&atilde;o devem incluir outra numera&ccedil;&atilde;o.</p>
+                    <p>Por exemplo:</p>
+                    <pre class="prettyprint">== 2.5. A utilidade do boi</pre>
+                    <p>Daria origem a duas numera&ccedil;&otilde;es:</p>
+                    <pre class="prettyprint">3.2  2.5 A utilidade do boi</pre>
+                </section>
+                <section id="">
+                    <div class="page-header">
+                        <h2>Texto Formatado</h2>
+                    </div>
+                    <p>Qualquer peda&ccedil;o de texto pode ser formatado em it&aacute;lico bold ou simplesmente
+                        real&ccedil;ado. A seguir apresentam-se exemplos de cada um dos casos:</p>
+                    <dl>
+                        <dt>Itálico</dt>
+                        <dd>coloca-se no <b>texto</b> o seguinte comando envolvente
+                            "&#92;&#98;&#102;&#123;&#116;&#101;&#120;&#116;&#111;}";</dd>
+                        <dt>Bold</dt>
+                        <dd>coloca-se no <b>texto</b> o seguinte comando envolvente
+                            "&#92;&#105;&#116;&#123;&#116;&#101;&#120;&#116;&#111;}";</dd>
+                        <dt>Realçado</dt>
+                        <dd>coloca-se no <b>texto</b> o seguinte comando envolvente
+                            "&#92;&#101;&#109;&#112;&#104;&#123;&#116;&#101;&#120;&#116;&#111;}".</dd>
+                    </dl>
+                </section>
+                <section id="tnf">
+                    <div class="page-header">
+                        <h2>Texto Não Formatado</h2>
+                    </div>
+                    <p>Uma das necessidade de um formatador de texto &eacute;, em certas partes, n&atilde;o formatar,
+                        copiando simplesmente para a sa&iacute;da o texto entrado sem quaisquer
+                        modifica&ccedil;&otilde;es. Isso pode ser realizado envolvendo o texto a "proteger" entre os
+                        comandos "&#92;&#110;&#111;&#112;&#114;&#101;&#112;" e "&#92;&#112;&#114;&#101;&#112;" ou
+                        "&#92;&#98;&#101;&#103;&#105;&#110;&#123;&#118;&#101;&#114;&#98;&#97;&#116;&#105;&#109;\}"
+                        "&#92;&#101;&#110;&#100;&#123;&#118;&#101;&#114;&#98;&#97;&#116;&#105;&#109;\}", se o texto
+                        f&ocirc;r composto por v&aacute;rias linhas, mas se o texto que a gente quer proteger da
+                        ac&ccedil;&atilde;o do PPP f&ocirc;r uma parte de uma linha pode-se e deve-se usar a macro
+                        "&#92;&#115;&#105;&#99;" (ver &agrave; frente em macros). Em termos de protec&ccedil;&atilde;o o
+                        par "&#92;&#110;&#111;&#112;&#114;&#101;&#112;" e "&#112;&#114;&#101;&#112;" &eacute; o mais
+                        poderoso pois vai converter todos os caracteres em c&oacute;digo ASCII puro (o melhor ainda
+                        &eacute; experimentar e ver o c&oacute;digo gerado).</p>
+                </section>
+                <section id="listas">
+                    <div class="page-header">
+                        <h2>Listas</h2>
+                    </div>
+                    <p>Neste momento, o PPP suporta tr&ecirc;s tipos de listas, que podem ser misturados e aninhados
+                        consoante a vontade do utilizador: listas de items, descritivas e numeradas.</p>
+                    <section id="itens">
+                        <div class="page-header">
+                            <h3>Listas de itens</h3>
+                        </div>
+                        <p>Utilizaremos uma descri&ccedil;&atilde;o por items para descrever este comando:</p>
+                        <ul>
+                            <li>Iniciado por ":" no final de uma linha;</li>
+                            <li>Cada Item come&ccedil;ado por "." como primeiro caracter n&atilde;o branco da linha e
+                                seguido por um caracter diferente de "[" ou digito;</li>
+                            <li>Terminada por um caracter &#35;.</li>
+                        </ul>
+                    </section>
+                    <section id="desc">
+                        <div class="page-header">
+                            <h3>Listas descritivas</h3>
+                        </div>
+                        <p>Utilizaremos uma lista descritiva para descrever este comando:</p>
+                        <dl>
+                            <dt> (a)</dt>
+                            <dd> Iniciado por ":" no final de uma linha;</dd>
+                            <dt> (b)</dt>
+                            <dd> Cada Item come&ccedil;ado por "." como primeiro caracter n&atilde;o branco da linha e seguido por uma palavra ou mais palavras entre "[" "]";</dd>
+                            <dt> (c)</dt>
+                            <dd> Terminada por um caracter &#35;.</dd>
+                        </dl>
+                    </section>
+                    <section id="lnum">
+                        <div class="page-header">
+                            <h3>Listas numeradas</h3>
+                        </div>
+                        <p>Utilizaremos uma lista numerada para descrever este comando:</p>
+                        <ol>
+                            <li>Iniciado por ":" no final de uma linha;</li>
+                            <li>Cada Item come&ccedil;ado por "." como primeiro caracter n&atilde;o branco da linha e seguido por um digito;</li>
+                            <li>Terminada por um caracter &#35;.</li>
+                        </ol>
+                    </section>
+                    <section id="tnf">
+                        <div class="page-header">
+                            <h2>Macros pr&eacute;-definidas</h2>
+                        </div>
+                        <p>Lista das macros definidas:</p>
+                        <pre class="prettyprint">\sic{...}</pre>
+                        <p>Não modifica o argumento.</p>
+                        <pre class="prettyprint">&#92;&#99;&#97;&#111;</pre>
+                        <p>&ccedil;&atilde;o</p>
+                        <pre class="prettyprint">&#92;&#99;&#111;&#101;&#115;</pre>
+                        <p>&ccedil;&otilde;es</p>
+                        <pre class="prettyprint">&#49;&#92;&#46;&#97;</pre>
+                        <p>1&#170;</p>
+                        <pre class="prettyprint">&#50;&#92;&#46;&#111;</pre>
+                        <p>2&#186;</p>
+                        <pre class="prettyprint">&#92;&#69;&#78;&#68;&#73;&#78;&#71;&#83;</pre>
+                        <p>Coloca um rodap&eacute; no documento semelhante ao que se pode encontrar no fim deste; s&oacute; deve ser usada no fim do documento.</p>
+                    </section>
+                    <section id="comentários">
+                        <div class="page-header">
+                            <h2>Comentários</h2>
+                        </div>
+                        <p>&Eacute; frequentemente útil introduzir notas de coment&aacute;rios no texto
+                            de modo que n&atilde;o apare&ccedil;am no texto final. Estes coment&aacute;rios podem ser
+                            introduzidos entre "%" na primeira coluna e a mudança de linha.</p>
+                    </section>
+                    <section id="links">
+                        <div class="page-header">
+                            <h2>Links</h2>
+                        </div>
+                        <p>Neste momento, s&oacute; s&atilde;o pr&eacute;-processados os links "normais", isto &eacute;, aqueles compostos por um URL e o texto que lhe fica associado:</p>
+                        <dl>
+                            <dt>Sintaxe:</dt>
+                            <dd><pre class="prettyprint">&#92;&#108;&#105;&#110;&#107;&#123;&#85;&#82;&#76;&#44;&#116;&#101;&#120;&#116;&#111;}</pre></dd>
+                            <dt>Exemplo:</dt>
+                            <dd><pre class="prettyprint">&#92;&#108;&#105;&#110;&#107;&#123;&#104;&#116;&#116;&#112;&#58;&#47;&#47;&#119;&#119;&#119;&#46;&#100;&#105;&#46;&#117;&#109;&#105;&#110;&#104;&#111;&#46;&#112;&#116;&#47;&#126;&#106;&#99;&#114;&#44;&#101;&#115;&#116;&#101;&#32;&#39;&#101;&#32;&#117;&#109;&#32;&#108;&#105;&#110;&#107;&#32;&#112;&#97;&#114;&#97;&#32;&#97;&#32;&#109;&#105;&#110;&#104;&#97;&#32;&#112;&#39;&#97;&#103;&#105;&#110;&#97;}</pre> que dá origem a:<pre class="prettyprint"><A HREF="http://www.di.uminho.pt/~jcr">este é um link para a minha página</A></pre></dd>
+                        </dl>
+                    </section>
+                    <section id="grafismos">
+                        <div class="page-header">
+                            <h2>Grafismos</h2>
+                        </div>
+                        <dl>
+                            <dt>Imagens</dt>
+                            <dd><pre class="prettyprint">&#92;&#105;&#109;&#97;&#103;&#101;&#123;&#112;&#97;&#116;&#104;&#32;&#112;&#97;&#114;&#97;&#32;&#97;&#32;&#105;&#109;&#97;&#103;&#101;&#109;}</pre></dd>
+                            <dt>Linha horizontal</dt>
+                            <dd><pre class="prettyprint">&#92;&#108;&#105;&#110;&#104;&#97;</pre> Coloca uma linha horizontal a preto, este comando deve aparecer no in&iacute;cio da linha.</dd>
+                        </dl>
+                    </section>
+                    <section id="tabelas">
+                        <div class="page-header">
+                            <h2>Tabelas</h2>
+                        </div>
+                        <table border="1">
+                            <tr>
+                                <th>Comando</th><th>Descrição</th>
+                            </tr>
+                            <tr>
+                                <td>&#92;&#116;&#97;&#98;&#108;&#101;</td>
+                                <td>inicia uma tabela com 1 linha e com "border"</td>
+                            </tr>
+                            <tr>
+                                <td>&#92;&#116;&#97;&#98;&#108;&#101;&#110;</td>
+                                <td>inicia uma tabela com 1 linha e sem "border"</td>
+                            </tr>
+                            <tr>
+                                <td>&#35;&#35;</td>
+                                <td>termina a linha corrente e inicia uma nova linha</td>
+                            </tr>
+                            <tr>
+                                <td>&#35;&#120;&#35;&#116;&#101;&#120;&#116;&#111;</td>
+                                <td>Cria uma nova coluna com cabe&ccedil;alho <em>texto</em>. O par&acirc;metro <em>x</em> pode tomar os seguintes valores:
+                                    l (encosta &agrave; esquerda), r (encosta &agrave; direita), c (centra)</td>
+                            </tr>
+                            <tr>
+                                <td>&#38;&#120;&#38;&#116;&#101;&#120;&#116;&#111;</td>
+                                <td>Preenche a coluna corrente da linha corrente com o <em>texto</em></td>
+                            </tr>
+                            <tr>
+                                <td>&#92;&#101;&#110;&#100;&#116;&#97;&#98;&#108;&#101;</td>
+                                <td>Termina a tabela</td>
+                            </tr>
+                        </table>
+                    </section>
+                </section>  
+                <section id="exemplo">
+                    <div class="page-header">
+                        <h1>Exemplo final</h1>
+                    </div>
+                    <p>Ao terminar este tutorial fica o texto deste manual escrito em PPP:</p>
+                    <pre class="prettyprint linenums">=titulo= PPP - V2.0 (preprocessador para \LaTeX e/ou HTML)
+=body=fundo2.gif
+
+=autor= Jos'e Carlos Ramalho
+
+\latex
+\maketitle
+\endlatex
+
+Pode fazer download do programa FLEX aqui: \link{ppp.fl,ppp.fl}.
+
+=indice=
+
+=Introdu,c~ao
+
+      Como 'e sabido por quem tenha j'a praticado a escrita de textos
+em latex e html, n~ao 'e f'acil, por exemplo,  a acentua\cao e a
+cedilha\cao.
+
+ Apesar dos muitos conversores existentes no mercado, a convers~ao de textos latex para html
+ e vice-versa n~ao 'e t~ao f'acil como `as vezes seria de desejar. 
+ 
+  Actualmente muitos utilizadores latex tentam disponibilizar na Internet
+  atrav'es do servi,co WWW os seus documentos e lutam com o processo de
+  convers~ao de modo a tornar a vers~ao final html o mais pr'oxima poss'ivel
+  da vers~ao latex e, n~ao menos importante, o mais eficiente poss'ivel 
+  para o utilizador final (a efici^encia traduz-se em tempos de espera de carregamento
+  de p'aginas o que est'a relacionado com a sua organiza,c~ao e natureza).
+
+Neste contexto surgiu a ideia de criar uma linguagem um pouco mais
+abstracta que o latex ou o html, que n~ao 'e nem pretende ser um
+substituto de nenhum dos dois mas sim uma plataforma interm'edia entre os
+dois a partir da qual seja f'acil e trivial converter em latex ou html.
+
+A linguagem proposta neste documento n~ao cobre nem de perto as
+facilidades e potencialidades quer do latex quer do html, cobre apenas um
+subconjunto que se pensou ser o utilizado em cerca de 75% dos documentos
+(foi criado um mecanismo que permite a introdu,c~ao de texto na linguagem
+destino: latex ou html).
+
+Em resumo os objectivos deste preprocessador s~ao facilitar:
+      . a convers~ao entre latex e html
+      . a introdu\cao de acentos e cedilhas
+      . a introdu\cao de cap'itulos, sec,c~oes, etc.
+      . o mecanismo de descri\cao por listas de items
+      . o mecanismo de descri\cao por listas enumeradas 
+      . o mecanismo de descri\cao por listas descritivas 
+      . a introdu,c~ao de coment'arios no texto
+      . grafismos (s'o em HTML)
+      . links (s'o em HTML)
+      . Tabelas
+      . formata,c~ao de caracteres
+      . gera,c~ao de 'indices
+      . modos protegidos
+      . e outras coisas que v~ao surgindo no dia-a-dia...
+#
+=PPP - Composi,c~ao e Instala\cao
+A vers~ao actual do PPP est'a desenvolvida em \emph{flex}, estando prevista uma futura vers~ao em \emph{Perl}.
+A ferramenta 'e assim constitu'ida pelos ficheiros:
+.[ppp.fl] c'odigo fonte da ferramenta.
+.[makefile] a makefile que cria o execut'avel na plataforma corrente (tem que ter o flex instalado).
+#
+
+Para instalar a ferramenta basta copiar os 2 ficheiros para a directoria apropriada e mandar executar a makefile. Isso far'a com que um execut'avel de nome \emph{ppp} seja criado nessa directoria.
+
+=PPP - Invoca\cao
+Inicialmente o PPP permitia v'arias op\coes de invoca\cao, mas `a medida que foi evoluindo, algumas dessas op\coes incompatibilizaram-se com alguns dos procedimentos da ferramenta, de modo que a invoca\cao aconselhada ser'a:
+.[para gerar LaTeX] ppp -l fich.pre fich.tex
+.[para gerar HTML] ppp -h fich.pre fich.html
+#
+
+=PPP - Ptext PreProcessor
+Nas sec,c~oes seguintes descreve-se de maneira sucinta o funcionamento e
+as facilidades inseridas na ferramenta criada.
+
+==Comandos latex/html
+ Como j'a foi referido o utilizador pode em qualquer altura introduzir
+ comandos nativos em latex/html (ao faz^e-lo n~ao est'a a tirar partido
+ da ferramenta, mas para as facilidades n~ao cobertas pelo PPP 'e a
+ 'unica solu,c~ao).
+
+Devido `a caracter'istica multi-l'ingua da ferramenta os comandos
+escritos numa das linguagens nativas t^em que ser protegidos, e s'o
+aparecer~ao no documento da linguagem a que pertencem. Por exemplo, se
+num documento quisermos introduzir texto latex puro, podemos faz^e-lo em
+modo protegido latex mas, esse texto s'o aparecer'a na convers~ao do
+texto para latex.
+
+Como temos duas linguagens alvo poss'iveis temos dois modos protegidos:
+.[latex] \noprep \latex ... texto latex ... \endlatex \prep.
+.[html] \noprep \html ... texto html ... \endhtml \prep.
+#
+
+===Exemplos
+\:
+.[latex] \begin{verbatim}
+               \latex
+                 \maketitle
+               \endlatex
+         \end{verbatim} 
+.[html] \begin{verbatim}
+               \html
+                 <IMG ALIGN=TOP SRC="exemplo.gif">
+               \endhtml
+        \end{verbatim}
+#         
+      
+
+==Acentos e Cedilhas
+Este foi um dos aspectos que mais motivou a presente ferramenta.
+A sintaxe definida 'e a seguinte:
+      .\sic{'a} = 'a
+      .\sic{`a} = `a
+      .\sic{^e} = ^e
+      .\sic{~O} = ~O
+      .\sic{,c} = ,c
+#
+
+==Cabe,calhos e Pre^ambulos de um Documento
+T'itulo e Autor do Documento:
+. =titulo=[texto]
+. =autor=[texto]
+#
+
+Pano de Fundo (s'o em HTML):
+. =body=[imagem]
+#
+Aqui o \sic{[imagem]} refere o "pathname" da imagem fundo (normalmente um GIF pequeno), que ir'a ser colocada como "BACKGROUND" da p'agina HTML gerada.
+
+'Indices:
+. =indice=
+#
+Os 'indices s~ao gerados no ponto do documento onde este comando aparece e contendo informa\cao desse ponto em diante. 'E assim possivel, ter indices que abrangem apenas parte do documento. Neste momento, s'o 'e possivel criar um 'indice por documento.
+
+
+Sec\coes e Subsec\coes:
+. =t'itulo de sec\cao
+. ==t'itulo de subsec\cao
+. ===t'itulo de subsubsec\cao
+. ====t'tulo de subsec\cao de n'ivel 4
+. =====t'itulo de subsec\cao de n'ivel 5
+#
+
+      Os "=" devem aparecer no in'icio das linhas 
+respectivas dando origem autom'aticamente `a numera\cao. Deste modo, 
+os t'itulos n~ao devem incluir outra numera\cao.
+Por exemplo:
+      . == 2.5. A utilidade do boi 
+        daria origem a duas numera\coes
+      . 3.2  2.5 A utilidade do boi
+#
+
+
+==Texto Formatado
+      Qualquer peda,co de texto pode ser formatado em it'alico bold ou simplesmente real,cado.
+      A seguir apresentam-se exemplos de cada um dos casos:
+	.[it'alico] coloca-se no \bf{texto} o seguinte comando envolvente "\sic{\bf{texto}}".
+	.[bold] coloca-se no \bf{texto} o seguinte comando envolvente "\sic{\it{texto}}".
+	.[real,cado] coloca-se no \bf{texto} o seguinte comando envolvente "\sic{\emph{texto}}".
+#
+
+
+==Texto n~ao formatado
+      Uma das necessidade de um formatador de texto 'e, em certas
+partes, n~ao formatar, copiando simplesmente para a sa'ida o texto
+entrado sem quaisquer modifica,c~oes. 
+Isso pode ser realizado envolvendo
+o texto a "proteger" entre os comandos "\sic{\noprep}" e "\sic{\prep}"
+ou "\sic{\begin{verbatim}\}"  "\sic{\end{verbatim}\}", se o texto f^or composto por v'arias linhas, mas se o texto que a gente quer proteger da ac\cao do PPP f^or uma parte de uma linha pode-se e deve-se usar a macro "\sic{\sic}" (ver `a frente em macros).
+Em termos de protec,c~ao o par "\sic{\noprep}" e "\sic{prep}" 'e o mais poderoso pois vai converter todos os caracteres em c'odigo ASCII puro (o melhor ainda 'e experimentar e ver o c'odigo gerado).
+
+==Listas 
+Neste momento, o PPP suporta tr^es tipos de listas, que podem ser misturados e aninhados consoante a vontade do utilizador: listas de items, descritivas e numeradas.
+
+===Items
+      Utilizaremos uma descri\cao por items para descrever este
+comando:
+      .Iniciado por ":" no final de uma linha.
+      .Cada Item come,cado por "." como primeiro caracter n~ao branco da
+linha e seguido por um caracter diferente de "[" ou digito.
+      .Terminada por um caracter \sic{#}.
+#
+
+===Descritivas
+      Utilizaremos uma lista descritiva para descrever este
+comando:
+      .[(a)] Iniciado por ":" no final de uma linha.
+      .[(b)] Cada Item come,cado por "." como primeiro caracter n~ao branco da
+linha e seguido por uma palavra ou mais palavras entre "[" "]".
+      .[(c)] Terminada por um caracter \sic{#}.
+#
+
+===Numeradas 
+      Utilizaremos uma lista numerada para descrever este
+comando:
+      .1 Iniciado por ":" no final de uma linha.
+      .2 Cada Item come,cado por "." como primeiro caracter n~ao branco da
+linha e seguido por um digito.
+      .3 Terminada por um caracter \sic{#}.
+#
+
+==Macros pr'e-definidas
+Lista das macros definidas:
+. \noprep \sic{...} \prep = n~ao modifica o argumento
+. \sic{\cao}  = \cao
+. \sic{\coes} = \coes
+. \sic{1\.a}  = 1\.a
+. \sic{2\.o}  = 2\.o 
+. \sic{\ENDINGS} = coloca um rodap'e no documento semelhante ao que se pode encontrar no fim deste; s'o deve ser usada no fim do documento.
+#
+
+==Coment'arios
+
+        'E frequentemente util introduzir notas de coment'arios no texto
+de modo que n~ao apare,cam no texto final. Estes coment'arios podem ser
+introduzidos entre "%" na primeira coluna e <NewLine>.
+
+% aqui est'a um coment'ario 
+
+
+==Links
+
+Neste momento, s'o s~ao pr'e-processados os links "normais", isto 'e, aqueles compostos por um URL e o texto que lhe fica associado:
+.[Sintaxe] \sic{\link{URL,texto}}.
+.[Exemplo] \sic{\link{http://www.di.uminho.pt/~jcr,este 'e um link para a minha p'agina}}, que d'a: \link{http://www.di.uminho.pt/~jcr,este 'e um link para a minha p'agina}.
+#
+
+==Grafismos (s'o em HTML)
+\:
+.[Imagens] \sic{\image{path para a imagem}}
+.[Linha Horizontal] \sic{\linha} - coloca uma linha horizontal a preto; este comando deve aparecer no in'icio da linha.
+#
+
+==Tabelas (de momento s'o para HTML)
+Sintaxe:
+\table
+#c#Comando #c#Descri\cao
+##
+&l&\sic{\table} &l& inicia uma tabela com 1 linha e com "border".
+##
+&l&\sic{\tablen} &l& inicia uma tabela com 1 linha e sem "border".
+##
+&l&\sic{##}  &l&termina a linha corrente e inicia uma nova linha.
+##
+&l&\sic{#x#texto} &l& Cria uma nova coluna com cabe,calho \emph{texto}. O par^ametro \emph{x} pode tomar os seguintes valores:
+l (encosta `a esquerda), r (encosta `a direita), c (centra).
+##
+&l&\sic{&x&texto} &l& Preenche a coluna corrente da linha corrente com o \emph{texto}.
+##
+&l&\sic{\endtable} &l& Termina a tabela.
+\endtable
+
+\ENDINGS
+</pre>
+                </section>
+            </section>
+            <hr />
+            <div id="footer">
+                <div class="container">
+                    <p class="muted credit">Revisto por <a href="http://www.di.uminho.pt/~jcr">José Carlos Ramalho</a> a
+                        10 de Março de 2013.</p>
+                </div>
+            </div>
+        </div><!-- Conteúdo -->
+        <script src="../bootstrap/js/prettify.js"></script>
+        <script type="text/javascript" src="../bootstrap/js/widgets.js"></script>
+        <script src="../bootstrap/js/jquery.js"></script>
+        <script src="../bootstrap/js/bootstrap-transition.js"></script>
+        <script src="../bootstrap/js/bootstrap-alert.js"></script>
+        <script src="../bootstrap/js/bootstrap-modal.js"></script>
+        <script src="../bootstrap/js/bootstrap-dropdown.js"></script>
+        <script src="../bootstrap/js/bootstrap-scrollspy.js"></script>
+        <script src="../bootstrap/js/bootstrap-tab.js"></script>
+        <script src="../bootstrap/js/bootstrap-tooltip.js"></script>
+        <script src="../bootstrap/js/bootstrap-popover.js"></script>
+        <script src="../bootstrap/js/bootstrap-button.js"></script>
+        <script src="../bootstrap/js/bootstrap-collapse.js"></script>
+        <script src="../bootstrap/js/bootstrap-carousel.js"></script>
+        <script src="../bootstrap/js/bootstrap-typeahead.js"></script>
+        <script src="../bootstrap/js/bootstrap-affix.js"></script>
+        <script src="../bootstrap/js/application.js"></script>
+    </body>
+</html>
