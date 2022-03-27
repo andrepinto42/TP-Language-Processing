@@ -6,14 +6,14 @@ import BuildSubstituionString
 import HandleFunctionsParameters
 import sys
 
-ENABLE_DEBUG = False
+ENABLE_DEBUG = True
 regexHeader = r'.+?[^\{\d+],|[^,].+?$'
 file = None
 first_line= ""
 lines = []
 
 #If there are atleast 2 arguments try to opening a file 
-if (len(sys.argv) >= 1):
+if (len(sys.argv) >= 2):
     file = open(sys.argv[1])
     first_line = file.readline()
 else: 
@@ -30,7 +30,7 @@ if ENABLE_DEBUG:
     print("Regex Expression",parametrosMatchingRegex)
     print("Substition Expression",parametrosSubstituion)
 
-if (len(sys.argv) >= 1):
+if (len(sys.argv) >= 2):
     lines =file.readlines()
 #If not then try to readlines from the standart input
 else:
