@@ -15,8 +15,27 @@ def buildFunctionLEX(token,regex,code):
     str_end = "return t\n"
     return str_first + str_regex + str_code + str_end
 
-def buildDefault():
-    return "import ply.lex as lex\n"
+def buildLexerInitial():
+    return """#-------------------
+# Lexer Code
+#-------------------
 
-def buildEnd():
+import ply.lex as lex
+"""
+
+def buildLexerEnd():
     return "\nlexer = lex.lex()\n"
+
+def buildYaccInitial():
+    return """#-------------------
+# Yacc Code
+#-------------------
+
+import ply.yacc as yacc
+"""
+
+def buildYaccEnd():
+    return """
+parser = yacc.yacc()
+parser.parse("5+5")
+"""

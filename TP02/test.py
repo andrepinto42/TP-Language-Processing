@@ -11,17 +11,21 @@ NUMBER "\d+(\.\d+)?" ""t.value = float(t.value)""
 error   ""error(f"Illegal character {t.value[0]}"); t.lexer.skip(1)"" 
 
 %% YAcc
-%precedence = [(+,-,),(*,/),(,UMINUS)]
-# symboltable : dictionary of variables
-ts = { }
+%precedence = ""[
+('left','+','-'),
+('left','*','/'),
+('right','UMINUS'),
+]""
+""ts = { }""
 '''
 
-#Store the last state that the parser is
-lastState = ""
+#Carregar o conteudo a partir de um ficheiro
+str_Input = open("input_PLY_SIMPLE.txt").read()
+
+
 
 tokens =[
-    "LEX","YACC","COMMENTARY",
-    "COMMENTARYTOKEN",
+    "LEX","YACC",
     "LITERALS","TOKENS","IGNORE","PRECEDENCE",
     "STR_ATRIB","TOKEN_ID",
     "CODE_EXPRESSION"]
@@ -32,35 +36,41 @@ t_ignore = ' \t\r'
 
 states = [
     ("LEXSTATE","inclusive"),
-    ("YACCSTATE","inclusive"),
-    ("COMMENTARYSTATE","inclusive")
+    ("YACCSTATE","inclusive")
 ]
-
-def t_COMMENTARY(t):
-    r'//'
-    t.lexer.begin("COMMENTARYSTATE")
-    return t
-
-def t_COMMENTARYSTATE_COMMENTARYTOKEN(t):
-    r'.+'
-    return t
 
 def t_LEX(t):
     r'%%\s*(?i)LEX'
     t.lexer.begin("LEXSTATE")
-    lastState = "LEXSTATE"
     return t
 
 
 def t_YACC(t):
     r'%%\s*(?i)YACC'
     t.lexer.begin("YACCSTATE")
-    lastState = "YACCSTATE"
     return t
+
+
+def t_CODE_EXPRESSION(t):
+    r'\"\"(.|\n)*?\"\"'
+    return t
+
+def t_STR_ATRIB(t):
+    r'"[^"](.|\n)*?[^"]"'
+    return t
+ 
+#------------------------------------
+#       YACC - STATE
+#------------------------------------
 
 def t_YACCSTATE_PRECEDENCE(t):
     r'%precedence'
     return t
+
+
+#------------------------------------
+#       LEX - STATE
+#------------------------------------
 
 def t_LEXSTATE_LITERALS(t):
     r'%literals'
@@ -74,29 +84,16 @@ def t_LEXSTATE_TOKENS(t):
     r'%tokens'
     return t
 
-def t_LEXSTATE_CODE_EXPRESSION(t):
-    r'"".*""'
-    return t
-
-def t_LEXSTATE_STR_ATRIB(t):
-    r'".+?"'
-    return t
-
-
 def t_LEXSTATE_TOKEN_ID(t):
-    r'\n\w+'
+    r'\n\s*\w+'
     return t
 
 def t_error(t):
     if (t.value[0] != '\n'):
         print("Wrong character!", t.value[0])
-    else:
-        t.lexer.begin(lastState)
     t.lexer.skip(1)
 
-
 lexer = lex.lex()
-
 
 lexer.input(str_Input)
 
@@ -105,10 +102,3 @@ print("\nStarting Parsing")
 
 for tok in lexer:
     print(tok)
-
-# import sys
-
-# for line in sys.stdin:
-#     lexer.input(line)
-#     for tok in lexer:
-#         print(tok)

@@ -1,11 +1,10 @@
 
 def splitter(string):
     newString = string[1:-1]
-    finalStr = ""
+    finalStr = []
     for c in newString:
-        finalStr += c + " "
+        finalStr.append(c)
     
-    #Remove the last unused space
-    finalStr = finalStr[:-1]
+    return finalStr
+
     
-    return finalStr.split()

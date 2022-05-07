@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = "CODE_EXPRESSION IGNORE INT LEX LITERALS PRECEDENCE STR_ATRIB TOKENS TOKEN_ID YACCprog : comandoscomandos : comandos : comandos comandocomando : atribcomando : LEXatrib : LITERALS '=' STR_ATRIBatrib : IGNORE '=' STR_ATRIBatrib : TOKENS '=' STR_ATRIBatrib : TOKEN_ID STR_ATRIB CODE_EXPRESSIONatrib : TOKEN_ID  CODE_EXPRESSION"
+_lr_signature = "CODE_EXPRESSION IGNORE LEX LITERALS PRECEDENCE STR_ATRIB TOKENS TOKEN_ID YACCprog : comandoscomandos : comandos : comando comandos comando : LEXcomando : YACCcomando : codecode : LITERALS '=' STR_ATRIBcode : IGNORE '=' STR_ATRIBcode : PRECEDENCE '=' CODE_EXPRESSIONcode : TOKENS '=' STR_ATRIBcode : TOKEN_ID STR_ATRIB CODE_EXPRESSIONcode : TOKEN_ID  CODE_EXPRESSIONcode : CODE_EXPRESSION"
     
-_lr_action_items = {'LEX':([0,2,3,4,5,14,15,16,17,18,],[-2,5,-3,-4,-5,-10,-6,-7,-8,-9,]),'LITERALS':([0,2,3,4,5,14,15,16,17,18,],[-2,6,-3,-4,-5,-10,-6,-7,-8,-9,]),'IGNORE':([0,2,3,4,5,14,15,16,17,18,],[-2,7,-3,-4,-5,-10,-6,-7,-8,-9,]),'TOKENS':([0,2,3,4,5,14,15,16,17,18,],[-2,8,-3,-4,-5,-10,-6,-7,-8,-9,]),'TOKEN_ID':([0,2,3,4,5,14,15,16,17,18,],[-2,9,-3,-4,-5,-10,-6,-7,-8,-9,]),'$end':([0,1,2,3,4,5,14,15,16,17,18,],[-2,0,-1,-3,-4,-5,-10,-6,-7,-8,-9,]),'=':([6,7,8,],[10,11,12,]),'STR_ATRIB':([9,10,11,12,],[13,15,16,17,]),'CODE_EXPRESSION':([9,13,],[14,18,]),}
+_lr_action_items = {'$end':([0,1,2,3,4,5,6,10,13,19,20,21,22,23,24,],[-2,0,-1,-2,-4,-5,-6,-13,-3,-12,-7,-8,-9,-10,-11,]),'LEX':([0,3,4,5,6,10,19,20,21,22,23,24,],[4,4,-4,-5,-6,-13,-12,-7,-8,-9,-10,-11,]),'YACC':([0,3,4,5,6,10,19,20,21,22,23,24,],[5,5,-4,-5,-6,-13,-12,-7,-8,-9,-10,-11,]),'LITERALS':([0,3,4,5,6,10,19,20,21,22,23,24,],[7,7,-4,-5,-6,-13,-12,-7,-8,-9,-10,-11,]),'IGNORE':([0,3,4,5,6,10,19,20,21,22,23,24,],[8,8,-4,-5,-6,-13,-12,-7,-8,-9,-10,-11,]),'PRECEDENCE':([0,3,4,5,6,10,19,20,21,22,23,24,],[9,9,-4,-5,-6,-13,-12,-7,-8,-9,-10,-11,]),'TOKENS':([0,3,4,5,6,10,19,20,21,22,23,24,],[11,11,-4,-5,-6,-13,-12,-7,-8,-9,-10,-11,]),'TOKEN_ID':([0,3,4,5,6,10,19,20,21,22,23,24,],[12,12,-4,-5,-6,-13,-12,-7,-8,-9,-10,-11,]),'CODE_EXPRESSION':([0,3,4,5,6,10,12,16,18,19,20,21,22,23,24,],[10,10,-4,-5,-6,-13,19,22,24,-12,-7,-8,-9,-10,-11,]),'=':([7,8,9,11,],[14,15,16,17,]),'STR_ATRIB':([12,14,15,17,],[18,20,21,23,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'prog':([0,],[1,]),'comandos':([0,],[2,]),'comando':([2,],[3,]),'atrib':([2,],[4,]),}
+_lr_goto_items = {'prog':([0,],[1,]),'comandos':([0,3,],[2,13,]),'comando':([0,3,],[3,3,]),'code':([0,3,],[6,6,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,14 +27,17 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> prog","S'",1,None,None,None),
-  ('prog -> comandos','prog',1,'p_prog','yacc.py',13),
-  ('comandos -> <empty>','comandos',0,'p_comandos_varios01','yacc.py',16),
-  ('comandos -> comandos comando','comandos',2,'p_comandos_varios02','yacc.py',19),
-  ('comando -> atrib','comando',1,'p_comando01','yacc.py',22),
-  ('comando -> LEX','comando',1,'p_comando02','yacc.py',25),
-  ('atrib -> LITERALS = STR_ATRIB','atrib',3,'p_atrib01','yacc.py',29),
-  ('atrib -> IGNORE = STR_ATRIB','atrib',3,'p_atrib02','yacc.py',34),
-  ('atrib -> TOKENS = STR_ATRIB','atrib',3,'p_atrib03','yacc.py',39),
-  ('atrib -> TOKEN_ID STR_ATRIB CODE_EXPRESSION','atrib',3,'p_atrib04','yacc.py',48),
-  ('atrib -> TOKEN_ID CODE_EXPRESSION','atrib',2,'p_atrib05','yacc.py',64),
+  ('prog -> comandos','prog',1,'p_prog','yacc.py',16),
+  ('comandos -> <empty>','comandos',0,'p_comandos_varios01','yacc.py',19),
+  ('comandos -> comando comandos','comandos',2,'p_comandos_varios02','yacc.py',23),
+  ('comando -> LEX','comando',1,'p_comando01','yacc.py',26),
+  ('comando -> YACC','comando',1,'p_comando02','yacc.py',31),
+  ('comando -> code','comando',1,'p_comando03','yacc.py',37),
+  ('code -> LITERALS = STR_ATRIB','code',3,'p_atrib01','yacc.py',40),
+  ('code -> IGNORE = STR_ATRIB','code',3,'p_atrib02','yacc.py',45),
+  ('code -> PRECEDENCE = CODE_EXPRESSION','code',3,'p_atrib03','yacc.py',50),
+  ('code -> TOKENS = STR_ATRIB','code',3,'p_atrib04','yacc.py',54),
+  ('code -> TOKEN_ID STR_ATRIB CODE_EXPRESSION','code',3,'p_atrib05','yacc.py',63),
+  ('code -> TOKEN_ID CODE_EXPRESSION','code',2,'p_atrib06','yacc.py',79),
+  ('code -> CODE_EXPRESSION','code',1,'p_atrib07','yacc.py',89),
 ]

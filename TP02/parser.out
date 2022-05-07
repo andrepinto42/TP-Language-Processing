@@ -1,43 +1,39 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    INT
-    PRECEDENCE
-    YACC
-
 Grammar
 
 Rule 0     S' -> prog
 Rule 1     prog -> comandos
 Rule 2     comandos -> <empty>
-Rule 3     comandos -> comandos comando
-Rule 4     comando -> atrib
-Rule 5     comando -> LEX
-Rule 6     atrib -> LITERALS = STR_ATRIB
-Rule 7     atrib -> IGNORE = STR_ATRIB
-Rule 8     atrib -> TOKENS = STR_ATRIB
-Rule 9     atrib -> TOKEN_ID STR_ATRIB CODE_EXPRESSION
-Rule 10    atrib -> TOKEN_ID CODE_EXPRESSION
+Rule 3     comandos -> comando comandos
+Rule 4     comando -> LEX
+Rule 5     comando -> YACC
+Rule 6     comando -> code
+Rule 7     code -> LITERALS = STR_ATRIB
+Rule 8     code -> IGNORE = STR_ATRIB
+Rule 9     code -> PRECEDENCE = CODE_EXPRESSION
+Rule 10    code -> TOKENS = STR_ATRIB
+Rule 11    code -> TOKEN_ID STR_ATRIB CODE_EXPRESSION
+Rule 12    code -> TOKEN_ID CODE_EXPRESSION
+Rule 13    code -> CODE_EXPRESSION
 
 Terminals, with rules where they appear
 
-=                    : 6 7 8
-CODE_EXPRESSION      : 9 10
-IGNORE               : 7
-INT                  : 
-LEX                  : 5
-LITERALS             : 6
-PRECEDENCE           : 
-STR_ATRIB            : 6 7 8 9
-TOKENS               : 8
-TOKEN_ID             : 9 10
-YACC                 : 
+=                    : 7 8 9 10
+CODE_EXPRESSION      : 9 11 12 13
+IGNORE               : 8
+LEX                  : 4
+LITERALS             : 7
+PRECEDENCE           : 9
+STR_ATRIB            : 7 8 10 11
+TOKENS               : 10
+TOKEN_ID             : 11 12
+YACC                 : 5
 error                : 
 
 Nonterminals, with rules where they appear
 
-atrib                : 4
+code                 : 6
 comando              : 3
 comandos             : 1 3
 prog                 : 0
@@ -49,17 +45,32 @@ state 0
     (0) S' -> . prog
     (1) prog -> . comandos
     (2) comandos -> .
-    (3) comandos -> . comandos comando
+    (3) comandos -> . comando comandos
+    (4) comando -> . LEX
+    (5) comando -> . YACC
+    (6) comando -> . code
+    (7) code -> . LITERALS = STR_ATRIB
+    (8) code -> . IGNORE = STR_ATRIB
+    (9) code -> . PRECEDENCE = CODE_EXPRESSION
+    (10) code -> . TOKENS = STR_ATRIB
+    (11) code -> . TOKEN_ID STR_ATRIB CODE_EXPRESSION
+    (12) code -> . TOKEN_ID CODE_EXPRESSION
+    (13) code -> . CODE_EXPRESSION
 
-    LEX             reduce using rule 2 (comandos -> .)
-    LITERALS        reduce using rule 2 (comandos -> .)
-    IGNORE          reduce using rule 2 (comandos -> .)
-    TOKENS          reduce using rule 2 (comandos -> .)
-    TOKEN_ID        reduce using rule 2 (comandos -> .)
     $end            reduce using rule 2 (comandos -> .)
+    LEX             shift and go to state 4
+    YACC            shift and go to state 5
+    LITERALS        shift and go to state 7
+    IGNORE          shift and go to state 8
+    PRECEDENCE      shift and go to state 9
+    TOKENS          shift and go to state 11
+    TOKEN_ID        shift and go to state 12
+    CODE_EXPRESSION shift and go to state 10
 
     prog                           shift and go to state 1
     comandos                       shift and go to state 2
+    comando                        shift and go to state 3
+    code                           shift and go to state 6
 
 state 1
 
@@ -70,175 +81,265 @@ state 1
 state 2
 
     (1) prog -> comandos .
-    (3) comandos -> comandos . comando
-    (4) comando -> . atrib
-    (5) comando -> . LEX
-    (6) atrib -> . LITERALS = STR_ATRIB
-    (7) atrib -> . IGNORE = STR_ATRIB
-    (8) atrib -> . TOKENS = STR_ATRIB
-    (9) atrib -> . TOKEN_ID STR_ATRIB CODE_EXPRESSION
-    (10) atrib -> . TOKEN_ID CODE_EXPRESSION
 
     $end            reduce using rule 1 (prog -> comandos .)
-    LEX             shift and go to state 5
-    LITERALS        shift and go to state 6
-    IGNORE          shift and go to state 7
-    TOKENS          shift and go to state 8
-    TOKEN_ID        shift and go to state 9
 
-    comando                        shift and go to state 3
-    atrib                          shift and go to state 4
 
 state 3
 
-    (3) comandos -> comandos comando .
+    (3) comandos -> comando . comandos
+    (2) comandos -> .
+    (3) comandos -> . comando comandos
+    (4) comando -> . LEX
+    (5) comando -> . YACC
+    (6) comando -> . code
+    (7) code -> . LITERALS = STR_ATRIB
+    (8) code -> . IGNORE = STR_ATRIB
+    (9) code -> . PRECEDENCE = CODE_EXPRESSION
+    (10) code -> . TOKENS = STR_ATRIB
+    (11) code -> . TOKEN_ID STR_ATRIB CODE_EXPRESSION
+    (12) code -> . TOKEN_ID CODE_EXPRESSION
+    (13) code -> . CODE_EXPRESSION
 
-    LEX             reduce using rule 3 (comandos -> comandos comando .)
-    LITERALS        reduce using rule 3 (comandos -> comandos comando .)
-    IGNORE          reduce using rule 3 (comandos -> comandos comando .)
-    TOKENS          reduce using rule 3 (comandos -> comandos comando .)
-    TOKEN_ID        reduce using rule 3 (comandos -> comandos comando .)
-    $end            reduce using rule 3 (comandos -> comandos comando .)
+    $end            reduce using rule 2 (comandos -> .)
+    LEX             shift and go to state 4
+    YACC            shift and go to state 5
+    LITERALS        shift and go to state 7
+    IGNORE          shift and go to state 8
+    PRECEDENCE      shift and go to state 9
+    TOKENS          shift and go to state 11
+    TOKEN_ID        shift and go to state 12
+    CODE_EXPRESSION shift and go to state 10
 
+    comando                        shift and go to state 3
+    comandos                       shift and go to state 13
+    code                           shift and go to state 6
 
 state 4
 
-    (4) comando -> atrib .
+    (4) comando -> LEX .
 
-    LEX             reduce using rule 4 (comando -> atrib .)
-    LITERALS        reduce using rule 4 (comando -> atrib .)
-    IGNORE          reduce using rule 4 (comando -> atrib .)
-    TOKENS          reduce using rule 4 (comando -> atrib .)
-    TOKEN_ID        reduce using rule 4 (comando -> atrib .)
-    $end            reduce using rule 4 (comando -> atrib .)
+    LEX             reduce using rule 4 (comando -> LEX .)
+    YACC            reduce using rule 4 (comando -> LEX .)
+    LITERALS        reduce using rule 4 (comando -> LEX .)
+    IGNORE          reduce using rule 4 (comando -> LEX .)
+    PRECEDENCE      reduce using rule 4 (comando -> LEX .)
+    TOKENS          reduce using rule 4 (comando -> LEX .)
+    TOKEN_ID        reduce using rule 4 (comando -> LEX .)
+    CODE_EXPRESSION reduce using rule 4 (comando -> LEX .)
+    $end            reduce using rule 4 (comando -> LEX .)
 
 
 state 5
 
-    (5) comando -> LEX .
+    (5) comando -> YACC .
 
-    LEX             reduce using rule 5 (comando -> LEX .)
-    LITERALS        reduce using rule 5 (comando -> LEX .)
-    IGNORE          reduce using rule 5 (comando -> LEX .)
-    TOKENS          reduce using rule 5 (comando -> LEX .)
-    TOKEN_ID        reduce using rule 5 (comando -> LEX .)
-    $end            reduce using rule 5 (comando -> LEX .)
+    LEX             reduce using rule 5 (comando -> YACC .)
+    YACC            reduce using rule 5 (comando -> YACC .)
+    LITERALS        reduce using rule 5 (comando -> YACC .)
+    IGNORE          reduce using rule 5 (comando -> YACC .)
+    PRECEDENCE      reduce using rule 5 (comando -> YACC .)
+    TOKENS          reduce using rule 5 (comando -> YACC .)
+    TOKEN_ID        reduce using rule 5 (comando -> YACC .)
+    CODE_EXPRESSION reduce using rule 5 (comando -> YACC .)
+    $end            reduce using rule 5 (comando -> YACC .)
 
 
 state 6
 
-    (6) atrib -> LITERALS . = STR_ATRIB
+    (6) comando -> code .
 
-    =               shift and go to state 10
+    LEX             reduce using rule 6 (comando -> code .)
+    YACC            reduce using rule 6 (comando -> code .)
+    LITERALS        reduce using rule 6 (comando -> code .)
+    IGNORE          reduce using rule 6 (comando -> code .)
+    PRECEDENCE      reduce using rule 6 (comando -> code .)
+    TOKENS          reduce using rule 6 (comando -> code .)
+    TOKEN_ID        reduce using rule 6 (comando -> code .)
+    CODE_EXPRESSION reduce using rule 6 (comando -> code .)
+    $end            reduce using rule 6 (comando -> code .)
 
 
 state 7
 
-    (7) atrib -> IGNORE . = STR_ATRIB
+    (7) code -> LITERALS . = STR_ATRIB
 
-    =               shift and go to state 11
+    =               shift and go to state 14
 
 
 state 8
 
-    (8) atrib -> TOKENS . = STR_ATRIB
+    (8) code -> IGNORE . = STR_ATRIB
 
-    =               shift and go to state 12
+    =               shift and go to state 15
 
 
 state 9
 
-    (9) atrib -> TOKEN_ID . STR_ATRIB CODE_EXPRESSION
-    (10) atrib -> TOKEN_ID . CODE_EXPRESSION
+    (9) code -> PRECEDENCE . = CODE_EXPRESSION
 
-    STR_ATRIB       shift and go to state 13
-    CODE_EXPRESSION shift and go to state 14
+    =               shift and go to state 16
 
 
 state 10
 
-    (6) atrib -> LITERALS = . STR_ATRIB
+    (13) code -> CODE_EXPRESSION .
 
-    STR_ATRIB       shift and go to state 15
+    LEX             reduce using rule 13 (code -> CODE_EXPRESSION .)
+    YACC            reduce using rule 13 (code -> CODE_EXPRESSION .)
+    LITERALS        reduce using rule 13 (code -> CODE_EXPRESSION .)
+    IGNORE          reduce using rule 13 (code -> CODE_EXPRESSION .)
+    PRECEDENCE      reduce using rule 13 (code -> CODE_EXPRESSION .)
+    TOKENS          reduce using rule 13 (code -> CODE_EXPRESSION .)
+    TOKEN_ID        reduce using rule 13 (code -> CODE_EXPRESSION .)
+    CODE_EXPRESSION reduce using rule 13 (code -> CODE_EXPRESSION .)
+    $end            reduce using rule 13 (code -> CODE_EXPRESSION .)
 
 
 state 11
 
-    (7) atrib -> IGNORE = . STR_ATRIB
+    (10) code -> TOKENS . = STR_ATRIB
 
-    STR_ATRIB       shift and go to state 16
+    =               shift and go to state 17
 
 
 state 12
 
-    (8) atrib -> TOKENS = . STR_ATRIB
+    (11) code -> TOKEN_ID . STR_ATRIB CODE_EXPRESSION
+    (12) code -> TOKEN_ID . CODE_EXPRESSION
 
-    STR_ATRIB       shift and go to state 17
+    STR_ATRIB       shift and go to state 18
+    CODE_EXPRESSION shift and go to state 19
 
 
 state 13
 
-    (9) atrib -> TOKEN_ID STR_ATRIB . CODE_EXPRESSION
+    (3) comandos -> comando comandos .
 
-    CODE_EXPRESSION shift and go to state 18
+    $end            reduce using rule 3 (comandos -> comando comandos .)
 
 
 state 14
 
-    (10) atrib -> TOKEN_ID CODE_EXPRESSION .
+    (7) code -> LITERALS = . STR_ATRIB
 
-    LEX             reduce using rule 10 (atrib -> TOKEN_ID CODE_EXPRESSION .)
-    LITERALS        reduce using rule 10 (atrib -> TOKEN_ID CODE_EXPRESSION .)
-    IGNORE          reduce using rule 10 (atrib -> TOKEN_ID CODE_EXPRESSION .)
-    TOKENS          reduce using rule 10 (atrib -> TOKEN_ID CODE_EXPRESSION .)
-    TOKEN_ID        reduce using rule 10 (atrib -> TOKEN_ID CODE_EXPRESSION .)
-    $end            reduce using rule 10 (atrib -> TOKEN_ID CODE_EXPRESSION .)
+    STR_ATRIB       shift and go to state 20
 
 
 state 15
 
-    (6) atrib -> LITERALS = STR_ATRIB .
+    (8) code -> IGNORE = . STR_ATRIB
 
-    LEX             reduce using rule 6 (atrib -> LITERALS = STR_ATRIB .)
-    LITERALS        reduce using rule 6 (atrib -> LITERALS = STR_ATRIB .)
-    IGNORE          reduce using rule 6 (atrib -> LITERALS = STR_ATRIB .)
-    TOKENS          reduce using rule 6 (atrib -> LITERALS = STR_ATRIB .)
-    TOKEN_ID        reduce using rule 6 (atrib -> LITERALS = STR_ATRIB .)
-    $end            reduce using rule 6 (atrib -> LITERALS = STR_ATRIB .)
+    STR_ATRIB       shift and go to state 21
 
 
 state 16
 
-    (7) atrib -> IGNORE = STR_ATRIB .
+    (9) code -> PRECEDENCE = . CODE_EXPRESSION
 
-    LEX             reduce using rule 7 (atrib -> IGNORE = STR_ATRIB .)
-    LITERALS        reduce using rule 7 (atrib -> IGNORE = STR_ATRIB .)
-    IGNORE          reduce using rule 7 (atrib -> IGNORE = STR_ATRIB .)
-    TOKENS          reduce using rule 7 (atrib -> IGNORE = STR_ATRIB .)
-    TOKEN_ID        reduce using rule 7 (atrib -> IGNORE = STR_ATRIB .)
-    $end            reduce using rule 7 (atrib -> IGNORE = STR_ATRIB .)
+    CODE_EXPRESSION shift and go to state 22
 
 
 state 17
 
-    (8) atrib -> TOKENS = STR_ATRIB .
+    (10) code -> TOKENS = . STR_ATRIB
 
-    LEX             reduce using rule 8 (atrib -> TOKENS = STR_ATRIB .)
-    LITERALS        reduce using rule 8 (atrib -> TOKENS = STR_ATRIB .)
-    IGNORE          reduce using rule 8 (atrib -> TOKENS = STR_ATRIB .)
-    TOKENS          reduce using rule 8 (atrib -> TOKENS = STR_ATRIB .)
-    TOKEN_ID        reduce using rule 8 (atrib -> TOKENS = STR_ATRIB .)
-    $end            reduce using rule 8 (atrib -> TOKENS = STR_ATRIB .)
+    STR_ATRIB       shift and go to state 23
 
 
 state 18
 
-    (9) atrib -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .
+    (11) code -> TOKEN_ID STR_ATRIB . CODE_EXPRESSION
 
-    LEX             reduce using rule 9 (atrib -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .)
-    LITERALS        reduce using rule 9 (atrib -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .)
-    IGNORE          reduce using rule 9 (atrib -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .)
-    TOKENS          reduce using rule 9 (atrib -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .)
-    TOKEN_ID        reduce using rule 9 (atrib -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .)
-    $end            reduce using rule 9 (atrib -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .)
+    CODE_EXPRESSION shift and go to state 24
+
+
+state 19
+
+    (12) code -> TOKEN_ID CODE_EXPRESSION .
+
+    LEX             reduce using rule 12 (code -> TOKEN_ID CODE_EXPRESSION .)
+    YACC            reduce using rule 12 (code -> TOKEN_ID CODE_EXPRESSION .)
+    LITERALS        reduce using rule 12 (code -> TOKEN_ID CODE_EXPRESSION .)
+    IGNORE          reduce using rule 12 (code -> TOKEN_ID CODE_EXPRESSION .)
+    PRECEDENCE      reduce using rule 12 (code -> TOKEN_ID CODE_EXPRESSION .)
+    TOKENS          reduce using rule 12 (code -> TOKEN_ID CODE_EXPRESSION .)
+    TOKEN_ID        reduce using rule 12 (code -> TOKEN_ID CODE_EXPRESSION .)
+    CODE_EXPRESSION reduce using rule 12 (code -> TOKEN_ID CODE_EXPRESSION .)
+    $end            reduce using rule 12 (code -> TOKEN_ID CODE_EXPRESSION .)
+
+
+state 20
+
+    (7) code -> LITERALS = STR_ATRIB .
+
+    LEX             reduce using rule 7 (code -> LITERALS = STR_ATRIB .)
+    YACC            reduce using rule 7 (code -> LITERALS = STR_ATRIB .)
+    LITERALS        reduce using rule 7 (code -> LITERALS = STR_ATRIB .)
+    IGNORE          reduce using rule 7 (code -> LITERALS = STR_ATRIB .)
+    PRECEDENCE      reduce using rule 7 (code -> LITERALS = STR_ATRIB .)
+    TOKENS          reduce using rule 7 (code -> LITERALS = STR_ATRIB .)
+    TOKEN_ID        reduce using rule 7 (code -> LITERALS = STR_ATRIB .)
+    CODE_EXPRESSION reduce using rule 7 (code -> LITERALS = STR_ATRIB .)
+    $end            reduce using rule 7 (code -> LITERALS = STR_ATRIB .)
+
+
+state 21
+
+    (8) code -> IGNORE = STR_ATRIB .
+
+    LEX             reduce using rule 8 (code -> IGNORE = STR_ATRIB .)
+    YACC            reduce using rule 8 (code -> IGNORE = STR_ATRIB .)
+    LITERALS        reduce using rule 8 (code -> IGNORE = STR_ATRIB .)
+    IGNORE          reduce using rule 8 (code -> IGNORE = STR_ATRIB .)
+    PRECEDENCE      reduce using rule 8 (code -> IGNORE = STR_ATRIB .)
+    TOKENS          reduce using rule 8 (code -> IGNORE = STR_ATRIB .)
+    TOKEN_ID        reduce using rule 8 (code -> IGNORE = STR_ATRIB .)
+    CODE_EXPRESSION reduce using rule 8 (code -> IGNORE = STR_ATRIB .)
+    $end            reduce using rule 8 (code -> IGNORE = STR_ATRIB .)
+
+
+state 22
+
+    (9) code -> PRECEDENCE = CODE_EXPRESSION .
+
+    LEX             reduce using rule 9 (code -> PRECEDENCE = CODE_EXPRESSION .)
+    YACC            reduce using rule 9 (code -> PRECEDENCE = CODE_EXPRESSION .)
+    LITERALS        reduce using rule 9 (code -> PRECEDENCE = CODE_EXPRESSION .)
+    IGNORE          reduce using rule 9 (code -> PRECEDENCE = CODE_EXPRESSION .)
+    PRECEDENCE      reduce using rule 9 (code -> PRECEDENCE = CODE_EXPRESSION .)
+    TOKENS          reduce using rule 9 (code -> PRECEDENCE = CODE_EXPRESSION .)
+    TOKEN_ID        reduce using rule 9 (code -> PRECEDENCE = CODE_EXPRESSION .)
+    CODE_EXPRESSION reduce using rule 9 (code -> PRECEDENCE = CODE_EXPRESSION .)
+    $end            reduce using rule 9 (code -> PRECEDENCE = CODE_EXPRESSION .)
+
+
+state 23
+
+    (10) code -> TOKENS = STR_ATRIB .
+
+    LEX             reduce using rule 10 (code -> TOKENS = STR_ATRIB .)
+    YACC            reduce using rule 10 (code -> TOKENS = STR_ATRIB .)
+    LITERALS        reduce using rule 10 (code -> TOKENS = STR_ATRIB .)
+    IGNORE          reduce using rule 10 (code -> TOKENS = STR_ATRIB .)
+    PRECEDENCE      reduce using rule 10 (code -> TOKENS = STR_ATRIB .)
+    TOKENS          reduce using rule 10 (code -> TOKENS = STR_ATRIB .)
+    TOKEN_ID        reduce using rule 10 (code -> TOKENS = STR_ATRIB .)
+    CODE_EXPRESSION reduce using rule 10 (code -> TOKENS = STR_ATRIB .)
+    $end            reduce using rule 10 (code -> TOKENS = STR_ATRIB .)
+
+
+state 24
+
+    (11) code -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .
+
+    LEX             reduce using rule 11 (code -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .)
+    YACC            reduce using rule 11 (code -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .)
+    LITERALS        reduce using rule 11 (code -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .)
+    IGNORE          reduce using rule 11 (code -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .)
+    PRECEDENCE      reduce using rule 11 (code -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .)
+    TOKENS          reduce using rule 11 (code -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .)
+    TOKEN_ID        reduce using rule 11 (code -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .)
+    CODE_EXPRESSION reduce using rule 11 (code -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .)
+    $end            reduce using rule 11 (code -> TOKEN_ID STR_ATRIB CODE_EXPRESSION .)
 
