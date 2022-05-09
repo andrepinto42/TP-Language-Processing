@@ -10,7 +10,7 @@ def buildFunctionLEX(token,regex,code):
     code = code.split(";")
     str_code = ""
     for piece in code:
-        str_code += piece +"\n\t"
+        str_code += piece.strip() +"\n\t"
     
     str_end = "return t\n"
     return str_first + str_regex + str_code + str_end
@@ -35,7 +35,7 @@ import ply.yacc as yacc
 """
 
 def buildYaccEnd():
-    return """
+    return"""
 parser = yacc.yacc()
 parser.parse("5+5")
 """

@@ -4,11 +4,13 @@ from splitter import *
 from test import str_Input
 from re import *
 from buildFunctions import *
-
+from buildParamsLex import run
 import sys
 
 lista_codigo = []
 
+#Guardar o numero de funcoes de gramatica reconhecidas
+numGrammar = 0
 def push(code):
     lista_codigo.append(code)
 
@@ -47,7 +49,9 @@ def p_atrib02(p):
 
 def p_atrib03(p):
     "code : PRECEDENCE '=' CODE_EXPRESSION"
-    push("precedence = " + p[3]);
+    #Trim "" "" from the code expression
+    code = p[3][2:-2]
+    push("precedence = " + code);
 
 def p_atrib04(p):
     "code : TOKENS '=' STR_ATRIB"
@@ -85,6 +89,20 @@ def  p_atrib06(p):
     push( buildFunctionLEX(token_ID,"",code))
 
 def p_atrib07(p):
+    "code : GRAMMAR CODE_EXPRESSION"
+    global numGrammar
+
+    #Remover o %"" "" da gramatica capturada
+    grammar_str= p[1][3:-2]
+
+    grammar_str = 'r"'+grammar_str+'"'
+    code = p[2][2:-2].strip()
+    push("def p_grammar"+str(numGrammar)+"(p):\n\t"+grammar_str+"\n\t"+code+"\n");
+    numGrammar += 1
+
+
+
+def p_atrib08(p):
     "code : CODE_EXPRESSION"
     #Cut the "" code "" from the string
     code = p[1][2:-2]
@@ -97,8 +115,13 @@ parser = yacc.yacc()
 
 parser.parse(str_Input)
 
+fileOutput = open("output.py","w")
+
 for codigo in lista_codigo:
-    print(codigo)
+    print(codigo,file=fileOutput)
+
+
+run()
 
 quit()
 

@@ -27,7 +27,7 @@ str_Input = open("input_PLY_SIMPLE.txt").read()
 tokens =[
     "LEX","YACC",
     "LITERALS","TOKENS","IGNORE","PRECEDENCE",
-    "STR_ATRIB","TOKEN_ID",
+    "STR_ATRIB","TOKEN_ID","GRAMMAR",
     "CODE_EXPRESSION"]
 
 literals = ['=','+','-',"'",'"','[',']','(',')']
@@ -67,7 +67,9 @@ def t_YACCSTATE_PRECEDENCE(t):
     r'%precedence'
     return t
 
-
+def t_YACCSTATE_GRAMMAR(t):
+    r'\%\"\"(.|\n)*?\"\"'
+    return t
 #------------------------------------
 #       LEX - STATE
 #------------------------------------
