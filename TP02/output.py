@@ -4,7 +4,7 @@
 
 import ply.lex as lex
 
-literals = ['+', '-', '/', '*', '=', '(', ')']
+literals = ['=', '+', '-', '*', '/', '-', '(', ')']
 ignore = " \t\n"
 tokens = ['VAR', 'NUMBER']
 def t_VAR(t):
@@ -18,12 +18,25 @@ def t_NUMBER(t):
 	return t
 
 def t_error(t):
-	error(f"Illegal character {t.value[0]}")
+	print(f"Illegal character {t.value[0]}") 
 	t.lexer.skip(1)
+	if (True):
+		pass
 	return t
 
+
+print('" ola"')
 print("done")
 print("another string")
+
+
+lexer = lex.lex()
+
+#-------------------
+# Yacc Code
+#-------------------
+
+import ply.yacc as yacc
 
 
 lexer = lex.lex()
@@ -41,46 +54,48 @@ precedence = [
 ]
 ts = { }
 def p_grammar0(p):
-	r"stat : VAR "=" exp"
+	r'stat : VAR "=" exp'
 	ts[p[1]] = p[3]
 
 def p_grammar1(p):
-	r"stat : exp"
+	r'stat : exp'
 	print(p[1])
 
 def p_grammar2(p):
 	r"exp : exp '+' exp "
-	t[0] = t[1] + t[3]
+	p[0] = p[1] + p[3]
 
 def p_grammar3(p):
 	r"exp : exp '-' exp "
-	t[0] = t[1] - t[3]
+	p[0] = p[1] - p[3]
 
 def p_grammar4(p):
 	r"exp : exp '*' exp "
-	t[0] = t[1] * t[3]
+	p[0] = p[1] * p[3]
 
 def p_grammar5(p):
 	r"exp : exp '/' exp "
-	t[0] = t[1] / t[3]
+	p[0] = p[1] / p[3]
 
 def p_grammar6(p):
 	r"exp : '-' exp %prec UMINUS "
-	t[0] = -t[2]
+	p[0] = -p[2]
 
 def p_grammar7(p):
 	r"exp : '(' exp ')' "
-	t[0] = t[2]
+	p[0] = p[2]
 
 def p_grammar8(p):
-	r"exp : NUMBER "
-	t[0] = t[1]
+	r'exp : NUMBER '
+	p[0] = p[1]
 
 def p_grammar9(p):
-	r"exp : VAR "
-	t[0] = getval(t[1])
+	r'exp : VAR '
+	p[0] = getval(p[1])
 
+
+def getval(n):
+    pass
 
 parser = yacc.yacc()
-parser.parse("5+5")
 

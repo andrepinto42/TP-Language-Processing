@@ -61,7 +61,7 @@ def t_error(t):
     t.lexer.skip(1)
 
 
-def run():
+def getLiterals():
     lexer = lex.lex()
 
     #Carregar o conteudo a partir de um ficheiro
@@ -72,5 +72,5 @@ def run():
 
     for tok in lexer:
         pass
-
-    print(literals_captured)
+    
+    return str(literals_captured)

@@ -4,8 +4,10 @@ from splitter import *
 from test import str_Input
 from re import *
 from buildFunctions import *
-from buildParamsLex import run
+from buildParamsLex import getLiterals
 import sys
+
+index_literals = 0
 
 lista_codigo = []
 
@@ -27,6 +29,9 @@ def p_comandos_varios02(p):
 def p_comando01(p):
     "comando : LEX"
     push(buildLexerInitial())
+    global index_literals
+    index_literals = len(lista_codigo)
+    push("literals = []")
 
 
 def p_comando02(p):
@@ -37,15 +42,15 @@ def p_comando02(p):
 def p_comando03(p):
     "comando : code"
 
+#Literals nao sao necessaŕios serem escritos
 def p_atrib01(p):
-    "code : LITERALS '=' STR_ATRIB"    
-    push("literals = "+str(splitter(p[3])))
+    "code : LITERALS '=' STR_ATRIB"
+
 
 
 def p_atrib02(p):
     "code : IGNORE '=' STR_ATRIB"
     push("ignore = "+ p[3]);
-
 
 def p_atrib03(p):
     "code : PRECEDENCE '=' CODE_EXPRESSION"
@@ -95,7 +100,13 @@ def p_atrib07(p):
     #Remover o %"" "" da gramatica capturada
     grammar_str= p[1][3:-2]
 
-    grammar_str = 'r"'+grammar_str+'"'
+    #Caso exista um "+" na expressao entao
+    #deve -se usar r' code: "+" '
+    if r"'" in grammar_str:
+        grammar_str = 'r"'+grammar_str+'"'
+    else:
+        grammar_str = "r'"+grammar_str+"'"
+
     code = p[2][2:-2].strip()
     push("def p_grammar"+str(numGrammar)+"(p):\n\t"+grammar_str+"\n\t"+code+"\n");
     numGrammar += 1
@@ -115,13 +126,21 @@ parser = yacc.yacc()
 
 parser.parse(str_Input)
 
+
+literals_captured = getLiterals()
+
+lista_codigo[index_literals] = "literals = "+literals_captured
+
+print(lista_codigo[index_literals])
+
+#--------------------------
+#   Escrever para o file   
+#--------------------------
+
 fileOutput = open("output.py","w")
 
 for codigo in lista_codigo:
     print(codigo,file=fileOutput)
-
-
-run()
 
 quit()
 
