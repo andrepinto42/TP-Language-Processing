@@ -20,7 +20,7 @@ states = [
 
 
 def t_YACC(t):
-    r'%%\s*(?i)YACC'
+    r'%\s*(?i)YACC'
     t.lexer.begin("YACCSTATE")
     return t
 
@@ -62,14 +62,14 @@ def t_error(t):
     t.lexer.skip(1)
 
 
+from lex import input_file
 def getLiterals():
     lexer = lex.lex()
 
     #Carregar o conteudo a partir de um ficheiro
-    str_Input = open("input_PLY_SIMPLE.txt").read()
+    str_Input = open(input_file).read()
     lexer.input(str_Input)
 
-    print("\nStarting Parsing First ITERATION")
 
     for tok in lexer:
         pass

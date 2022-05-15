@@ -1,7 +1,18 @@
 import ply.lex as lex
 from re import sub
-#Carregar o conteudo a partir de um ficheiro
-str_Input = open("input_PLY_SIMPLE.txt").read()
+
+import sys
+
+input_file=""
+
+if len(sys.argv) >= 2:
+    #Carregar o conteudo a partir de um ficheiro
+    str_Input = open(sys.argv[1]).read()
+    input_file = sys.argv[1]
+    
+else:
+    str_Input = sys.stdin.read()
+
 
 tokens_captured = []
 
@@ -12,7 +23,7 @@ tokens_captured = []
 tokens =[
     "LEX","YACC",
     "PARAMETER",
-    "STR_ATRIB","TOKEN_ID","GRAMMAR","SIGNAL",
+    "STR_ATRIB","TOKEN_ID","GRAMMAR","SIGNAL","COMMENTARY",
     "CODE_EXPRESSION"]
 
 literals = ['=',"'",'"']
@@ -48,6 +59,10 @@ def t_SIGNAL(t):
     r'\!'
     return t
 
+def t_COMMENTARY(t):
+    r'\#.*'
+    return t
+
 def t_PARAMETER(t):
     r'%\w+'
     return t 
@@ -78,10 +93,10 @@ def t_error(t):
 
 lexer = lex.lex()
 
-lexer.input(str_Input)
+# lexer.input(str_Input)
 
-print(str_Input)
-print("\nStarting Parsing")
+# print(str_Input)
+# print("\nStarting Parsing")
 
-for tok in lexer:
-    print(tok)
+# for tok in lexer:
+#     print(tok)

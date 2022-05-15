@@ -1,7 +1,7 @@
 import ply.yacc as yacc
-from test import tokens,tokens_captured
+from lex import tokens,tokens_captured
 from splitter import *
-from test import str_Input
+from lex import str_Input
 from re import *
 from buildFunctions import *
 from buildParamsLex import getLiterals
@@ -9,8 +9,7 @@ import sys
 
 lista_codigo = []
 
-#Guardar o numero de funcoes de gramatica reconhecidas
-numGrammar = 0
+
 def push(code):
     lista_codigo.append(code)
 
@@ -19,7 +18,6 @@ def p_prog(p):
 
 def p_comandos_varios01(p):
     "comandos : "
-    push(buildYaccEnd())
 
 def p_comandos_varios02(p):
     "comandos : comando comandos "
@@ -42,6 +40,12 @@ def p_comando02(p):
 
 def p_comando03(p):
     "comando : code"
+
+
+def p_comando04(p):
+    "comando : COMMENTARY"
+    # Do nothing because the commentary is not supposed to appear in the final code
+
 
 def p_atrib02(p):
     "code : PARAMETER '=' CODE_EXPRESSION"
@@ -87,9 +91,14 @@ def p_atrib_extra03(p):
     "extra : SIGNAL extra"
     p[0] = p[1] + p[2]
 
+#Guardar o numero de funcoes de gramatica reconhecidas
+numGrammar = 0
+last_inserted_grammar = 0
+
 def p_atrib07(p):
     "code : GRAMMAR CODE_EXPRESSION"
     global numGrammar
+    global last_inserted_grammar
 
     #Remover o %"" "" da gramatica capturada
     grammar_str= p[1][3:-2]
@@ -103,11 +112,18 @@ def p_atrib07(p):
 
     code = p[2][2:-2].strip()
 
-    push("def p_grammar"+str(numGrammar)+"(p):\n\t"+grammar_str)
+    push("def p_grammar"+str(numGrammar)+"(t):\n\t"+grammar_str)
     for piece in code.split("\n"):
         push("\t"+piece);
-    #push a \n to split the functions for better readibly
-    push("\n")
+    
+    #Store the index of the last grammar inserted 
+    # so after the parsing is done we can add more code to the last segment
+    last_inserted_grammar =len(lista_codigo)
+
+    #Add \n at the end 
+    push("")
+
+    #Increase the counter for the number of functions of Grammar
     numGrammar += 1
 
 
@@ -122,19 +138,27 @@ def p_error(p):
     print("Error in",p)
 
 parser = yacc.yacc()
-
 parser.parse(str_Input)
+
+#-------------------------
+# Arranjar pedacos do codigo
+#-------------------------
+
+lista_codigo[last_inserted_grammar] = buildYaccEnd()
 
 #--------------------------
 #   Escrever para o file   
 #--------------------------
 
-fileOutput = open("output.py","w")
+import sys 
+if (len(sys.argv) >=3):
+    fileOutput = open(sys.argv[2],"w")
+    for codigo in lista_codigo:
+        print(codigo,file=fileOutput)
+else:
+    for codigo in lista_codigo:
+        print(codigo)
 
-for codigo in lista_codigo:
-    print(codigo,file=fileOutput)
-
-quit()
 
 # for line in sys.stdin:
 #     parser.parse(line)

@@ -1,5 +1,6 @@
 % LeX
 %ignore = """ \t\n"""
+
 VAR "[a-zA-Z_][a-zA-Z0-9_]*" ""print("Found a ID")""
 
 NUMBER "\d+(\.\d+)?" ""t.value = float(t.value)""
@@ -7,13 +8,7 @@ error   !""
 print(f"Illegal character {t.value[0]}") 
 t.lexer.skip(1) # Inside Here
 "" #Hi again
-#Hello there
 %YAcc
-
-%precedence = ""[
-('left','+','-'),
-('left','*','/'),
-]""
 
 ""ts = { }""
 
