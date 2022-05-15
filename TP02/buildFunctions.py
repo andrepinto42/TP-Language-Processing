@@ -1,6 +1,6 @@
 from re import sub
 
-def buildFunctionLEX(token,regex,code):
+def buildFunctionLEX(token,regex,code,returnKeyword=True):
     str_first = "def t_"+token+"(t):\n\t"
 
     str_regex=""
@@ -18,7 +18,10 @@ def buildFunctionLEX(token,regex,code):
         piece =sub(" {4}","\t",piece)
         str_code += piece +"\n\t"
     
-    str_end = "return t\n"
+    str_end = ""
+    if (returnKeyword):
+        str_end = "return t\n"
+    
     return str_first + str_regex + str_code + str_end
 
 def buildLexerInitial():
@@ -42,5 +45,9 @@ import ply.yacc as yacc
 
 def buildYaccEnd():
     return"""
+def p_error(p):
+    print("Error in",p)
+
+
 parser = yacc.yacc()
 """

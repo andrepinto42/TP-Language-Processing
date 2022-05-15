@@ -18,6 +18,7 @@ states = [
     ("GRAMMARSTATE","inclusive")
 ]
 
+
 def t_YACC(t):
     r'%%\s*(?i)YACC'
     t.lexer.begin("YACCSTATE")

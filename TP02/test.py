@@ -1,36 +1,21 @@
 import ply.lex as lex
-
-str_Input =r'''
-%% LeX
-%literals = "+-/*=()"
-%ignore = " \t\n"
-%tokens = "VAR NUMBER"
-VAR "[a-zA-Z_][a-zA-Z0-9_]*" ""print("Found a ID")""
-
-NUMBER "\d+(\.\d+)?" ""t.value = float(t.value)""
-error   ""error(f"Illegal character {t.value[0]}"); t.lexer.skip(1)"" 
-
-%% YAcc
-%precedence = ""[
-('left','+','-'),
-('left','*','/'),
-('right','UMINUS'),
-]""
-""ts = { }""
-'''
-
+from re import sub
 #Carregar o conteudo a partir de um ficheiro
 str_Input = open("input_PLY_SIMPLE.txt").read()
 
+tokens_captured = []
 
 
+#-----------------------
+# Parametros do Lexer 
+#-----------------------
 tokens =[
     "LEX","YACC",
-    "LITERALS","TOKENS","IGNORE","PRECEDENCE",
-    "STR_ATRIB","TOKEN_ID","GRAMMAR",
+    "PARAMETER",
+    "STR_ATRIB","TOKEN_ID","GRAMMAR","SIGNAL",
     "CODE_EXPRESSION"]
 
-literals = ['=','+','-',"'",'"','[',']','(',')']
+literals = ['=',"'",'"']
 
 t_ignore = ' \t\r'
 
@@ -40,32 +25,36 @@ states = [
 ]
 
 def t_LEX(t):
-    r'%%\s*(?i)LEX'
+    r'%\s*(?i)LEX'
     t.lexer.begin("LEXSTATE")
     return t
 
 
 def t_YACC(t):
-    r'%%\s*(?i)YACC'
+    r'%\s*(?i)YACC'
     t.lexer.begin("YACCSTATE")
     return t
 
 
 def t_CODE_EXPRESSION(t):
-    r'\"\"(.|\n)*?\"\"'
+    r'\"\"(.|\n)*?\"\"(?!\")'
     return t
 
 def t_STR_ATRIB(t):
     r'"[^"](.|\n)*?[^"]"'
     return t
- 
+
+def t_SIGNAL(t):
+    r'\!'
+    return t
+
+def t_PARAMETER(t):
+    r'%\w+'
+    return t 
 #------------------------------------
 #       YACC - STATE
 #------------------------------------
 
-def t_YACCSTATE_PRECEDENCE(t):
-    r'%precedence'
-    return t
 
 def t_YACCSTATE_GRAMMAR(t):
     r'\%\"\"(.|\n)*?\"\"'
@@ -74,20 +63,12 @@ def t_YACCSTATE_GRAMMAR(t):
 #       LEX - STATE
 #------------------------------------
 
-def t_LEXSTATE_LITERALS(t):
-    r'%literals'
-    return t
-
-def t_LEXSTATE_IGNORE(t):
-    r'%ignore'
-    return t
-
-def t_LEXSTATE_TOKENS(t):
-    r'%tokens'
-    return t
 
 def t_LEXSTATE_TOKEN_ID(t):
-    r'\n\s*\w+'
+    r'\s*\w+'
+    token_Found = sub("\s*","",t.value)
+    if (token_Found != "error"):
+        tokens_captured.append(token_Found)
     return t
 
 def t_error(t):

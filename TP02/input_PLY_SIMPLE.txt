@@ -1,42 +1,35 @@
-%% LeX
-%ignore = " \t\n"
-%tokens = "VAR NUMBER"
+% LeX
+%ignore = """ \t\n"""
 VAR "[a-zA-Z_][a-zA-Z0-9_]*" ""print("Found a ID")""
 
 NUMBER "\d+(\.\d+)?" ""t.value = float(t.value)""
-error   ""
+error   !""
 print(f"Illegal character {t.value[0]}") 
 t.lexer.skip(1)
-if (True):
-    pass
 "" 
 
-""
-print('" ola"')""
-
-""print("done")
-print("another string")
-""
-%% YACC
-
-%% YAcc
+%YAcc
 
 %precedence = ""[
 ('left','+','-'),
 ('left','*','/'),
-('right','UMINUS'),
 ]""
 
 ""ts = { }""
 
+%""prog : comandos"" "" ""
+%""comandos : comando comandos"" "" ""
+%"" comandos :"" "" print("End of file") ""
+
+%"" comando : stat "" "" ""
  %""stat : VAR "=" exp"" "" ts[p[1]] = p[3] ""
 %""stat : exp"" "" print(p[1]) ""
 
-%""exp : exp '+' exp "" "" p[0] = p[1] + p[3] ""
+%""exp : exp '+' exp "" "" p[0] = p[1] + p[3]
+print("found a +") ""
 %""exp : exp '-' exp "" "" p[0] = p[1] - p[3] ""
 %""exp : exp '*' exp "" "" p[0] = p[1] * p[3] ""
 %""exp : exp '/' exp "" "" p[0] = p[1] / p[3] ""
-%""exp : '-' exp %prec UMINUS "" "" p[0] = -p[2] ""
 %""exp : '(' exp ')' "" "" p[0] = p[2] ""
 %""exp : NUMBER "" "" p[0] = p[1] ""
 %""exp : VAR "" "" p[0] = getval(p[1]) ""
