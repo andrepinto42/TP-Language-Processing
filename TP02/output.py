@@ -5,7 +5,7 @@
 import ply.lex as lex
 
 literals = ['=', '+', '-', '*', '/', '(', ')']
-tokens = []
+tokens = ['VAR', 'NUMBER']
 ignore = " \t\n"
 def t_VAR(t):
 	r'[a-zA-Z_][a-zA-Z0-9_]*'
@@ -30,6 +30,10 @@ lexer = lex.lex()
 
 import ply.yacc as yacc
 
+precedence = [
+('left','+','-'),
+('left','*','/'),
+]
 ts = { }
 def p_grammar0(t):
 	r'prog : comandos'

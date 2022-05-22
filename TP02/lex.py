@@ -92,11 +92,3 @@ def t_error(t):
     t.lexer.skip(1)
 
 lexer = lex.lex()
-
-# lexer.input(str_Input)
-
-# print(str_Input)
-# print("\nStarting Parsing")
-
-# for tok in lexer:
-#     print(tok)

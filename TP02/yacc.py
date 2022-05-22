@@ -22,14 +22,19 @@ def p_comandos_varios01(p):
 def p_comandos_varios02(p):
     "comandos : comando comandos "
 
+
+index_Tokens =0
+
 def p_comando01(p):
     "comando : LEX"
+    global index_Tokens
     push(buildLexerInitial())
 
     #Use lexer to discover the literals that are being used
     literals_captured = getLiterals()
     push("literals = "+literals_captured)
-
+    index_Tokens = len(lista_codigo)
+    #Por alguma razao estes tokens ainda nao foram descobertos
     push("tokens = " +str(tokens_captured))
 
 
@@ -145,7 +150,7 @@ parser.parse(str_Input)
 #-------------------------
 
 lista_codigo[last_inserted_grammar] = buildYaccEnd()
-
+lista_codigo[index_Tokens] = "tokens = " + str(tokens_captured)
 #--------------------------
 #   Escrever para o file   
 #--------------------------

@@ -1,0 +1,39 @@
+% LeX
+%ignore = """ \t\n"""
+
+VAR "[a-zA-Z_][a-zA-Z0-9_]*" ""print("Found a ID")""
+
+NUMBER "\d+(\.\d+)?" ""t.value = float(t.value)""
+error   !""
+print(f"Illegal character {t.value[0]}") 
+t.lexer.skip(1) # Inside Here
+"" #Hi again
+%YAcc
+
+""ts = { }""
+
+%""prog : comandos"" "" ""
+%""comandos : comando comandos"" "" ""
+%"" comandos :"" "" print("End of file") ""
+
+%"" comando : stat "" "" ""
+ %""stat : VAR "=" exp"" "" ts[t[1]] = t[3] ""
+%""stat : exp"" "" print(t[1]) ""
+
+%""exp : exp '+' exp "" "" t[0] = t[1] + t[3]
+print("found a +") ""
+%""exp : exp '-' exp "" "" t[0] = t[1] - t[3] ""
+%""exp : exp '*' exp "" "" t[0] = t[1] * t[3] ""
+%""exp : exp '/' exp "" "" t[0] = t[1] / t[3] ""
+%""exp : '(' exp ')' "" "" t[0] = t[2] ""
+%""exp : NUMBER "" "" t[0] = t[1] ""
+%""exp : VAR "" "" t[0] = getval(t[1]) ""
+
+""
+def getval(n):
+    pass
+
+str_Input = '''4*5+4'''
+
+parser.parse(str_Input)
+""
